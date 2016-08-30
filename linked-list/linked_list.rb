@@ -1,16 +1,27 @@
 require "./node.rb"
 
 class LinkedList
-  attr_reader :node
+  attr_reader :head, :tail
 
   def initialize(data = nil)
-    @head = Node.new(data) unless data.nil?
+    unless data.nil?
+      @head = Node.new(data)
+      @tail = @head
+    end
   end
 
   # add item to the start of the list
   def prepend(data)
+    new_node = Node.new(data)
+
+    if(@head.nil?)
+      @head = new_node
+      @tail = @head
+      return
+    end
+
     current_head = @head
-    @head = Node.new(data)
+    @head = new_node
     @head.next = current_head
   end
 
@@ -26,17 +37,17 @@ class LinkedList
 
   # add new item to the end of the list
   def append(data)
+    new_node = Node.new(data)
     if(@head.nil?)
-      @head = Node.new(data) and return
+      @head = new_node
+      @tail = @head
+      return
     end
 
-    current_head_node = @head
-    while(current_head_node)
-      break if(current_head_node.next.nil?)
-      current_head_node = current_head_node.next
-    end
-
-    current_head_node.next = Node.new(data)
+    # add item at the end of the tail
+    @tail.next = new_node
+    # update the tail to be new item
+    @tail = @tail.next
   end
 
   # is the list empty
@@ -53,12 +64,8 @@ class LinkedList
 end
 
 l = LinkedList.new
-l.append("Data 1")
+l.prepend("Data 1")
+l.prepend('Data 0')
 l.append("Data 2")
-l.append("Data 3")
-l.prepend("Data 0")
-l.prepend("Data -1")
-l.append("Data 4")
-l.pop_front
 l.pop_front
 l.print_list
