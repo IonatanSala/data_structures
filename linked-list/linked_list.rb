@@ -1,4 +1,4 @@
-require "./node.rb"
+require_relative "./node.rb"
 
 class LinkedList
   attr_reader :head, :tail
@@ -50,6 +50,49 @@ class LinkedList
     @tail = @tail.next
   end
 
+  # get last item in the list
+  def top_back
+    @tail
+  end
+
+  # remove the last item in the list
+  def pop_back
+    if @head.nil?
+      p "List is empty"
+    end
+
+    if @head == @tail
+      @head = nil
+      @tail = nil
+    else
+      current_head = @head
+      while !current_head.next.next.nil?
+        current_head = current_head.next
+      end
+
+      current_head.next = nil
+      @tail = current_head
+    end
+  end
+
+  # check if the data is in the list
+  # return a boolean
+  def find?(key)
+    current_node = @head
+    while(current_node)
+      if(current_node.data == key)
+        return true
+      end
+      current_node = current_node.next
+    end
+
+    return false
+  end
+
+  # remove data from the list
+  def remove(key)
+  end
+
   # is the list empty
   def empty?
     @head == nil
@@ -57,7 +100,9 @@ class LinkedList
 
   # print out all the items in the list
   def print_list(node = @head)
-    p node.data
-    print_list(node.next) unless node.next.nil?
+    while(node)
+      p node.data
+      node = node.next
+    end
   end
 end
